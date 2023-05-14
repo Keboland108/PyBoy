@@ -201,7 +201,7 @@ except FileNotFoundError:
 
 setup(
     name="pyboy",
-    version="v1.5.3",
+    version="v1.5.5",
     packages=find_packages(),
     author="Mads Ynddal",
     author_email="mads-pyboy@ynddal.dk",
@@ -234,6 +234,6 @@ setup(
     },
     zip_safe=(not CYTHON), # Cython doesn't support it
     ext_modules=ext_modules,
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     package_data={"": ["*.pxi", "*.pyx", "*.pxd", "*.c", "*.h", "bootrom*.bin", "font.txt"]},
 )

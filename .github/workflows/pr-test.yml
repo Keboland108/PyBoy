@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        python-version: [3.7, 3.8, 3.9, "3.10", 3.11]
+        python-version: [3.8, 3.9, "3.10", 3.11]
 
     steps:
     - uses: actions/checkout@v3
@@ -30,7 +30,7 @@ jobs:
         pip install wheel
     - name: Build PyBoy
       run: |
-        python setup.py build_ext --inplace
+        python setup.py build_ext -j $(getconf _NPROCESSORS_ONLN) --inplace
     - name: Run PyTest
       env:
         PYTEST_SECRETS_KEY: ${{ secrets.PYTEST_SECRETS_KEY }}
@@ -57,14 +57,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        python-version: ['pypy-3.7', 'pypy-3.8', 'pypy-3.9']
-        exclude:
-        # Not worth the time to fix:
-        # The headers or library files could not be found for zlib, a required dependency when compiling Pillow from source.
-        - os: windows-latest
-          python-version: pypy-3.7
-        - os: windows-latest
-          python-version: pypy-3.9
+        python-version: ['pypy-3.8', 'pypy-3.9']
     steps:
     - uses: actions/checkout@v3
     - name: Setup macOS
@@ -131,7 +124,7 @@ jobs:
           echo "Starting build"
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
-          python setup.py build_ext --inplace
+          python setup.py build_ext -j $(getconf _NPROCESSORS_ONLN) --inplace
 
           echo "Starting tests"
           if [[ "${{ matrix.manylinux-version }}" == "manylinux2010_x86_64" ]]; then
